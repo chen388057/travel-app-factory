@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>我的旅遊 App 工廠</title>
+<style>
+:root{--bg:#f5f2ee;--card:#fff;--ink:#302e2b;--muted:#78716b;--line:#e6dfd7;--blue:#2563eb;--blueSoft:#eaf1ff;--danger:#a0443d;--dangerBg:#fae8e5}
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif}button,input,textarea,select{font:inherit}
+.app{max-width:1020px;margin:auto;padding:18px 16px 90px}.top{padding:8px 0 22px}.top h1{margin:6px 0 6px;font-size:30px}.top p{margin:0;color:var(--muted)}.badge{display:inline-block;padding:4px 9px;border-radius:999px;background:var(--blueSoft);color:#2250ae;font-size:12px;font-weight:800}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin:14px 0;box-shadow:0 5px 18px rgba(0,0,0,.035)}.sectionHead{display:flex;justify-content:space-between;align-items:center;gap:12px}.sectionHead h2{margin:0}.hint{font-size:12px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.field label{display:block;font-size:13px;font-weight:800;margin:0 0 6px}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:11px;background:#fff;padding:11px 12px;outline:none;color:var(--ink)}.field textarea{min-height:80px;resize:vertical}
+.btn{border:0;border-radius:11px;padding:10px 14px;font-weight:800;cursor:pointer}.primary{background:var(--blue);color:#fff}.light{background:#f2eee9;color:#514b45}.danger{background:var(--dangerBg);color:var(--danger)}
+.tripList{display:grid;gap:12px}.trip{border:1px solid var(--line);border-radius:16px;padding:15px;background:#fff}.tripTitle{font-weight:900;font-size:18px}.tripMeta{color:var(--muted);font-size:13px;margin-top:4px}.tripActions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.day,.subCard{border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px}.dayHead{display:flex;justify-content:space-between;align-items:center;gap:8px}.dayLabel{font-weight:900}.item{display:grid;grid-template-columns:82px 1fr 1.3fr 1fr auto;gap:8px;align-items:start;margin-top:8px}.item input,.item textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px}.item textarea{min-height:44px;resize:vertical}.actions{display:flex;gap:10px;flex-wrap:wrap}.empty{text-align:center;padding:28px;color:var(--muted)}
+footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:9px 16px calc(9px + env(safe-area-inset-bottom));z-index:100}.footerIn{max-width:1020px;margin:auto;display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted)}
+.hidden{display:none!important}@media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}.item{grid-template-columns:1fr 1fr}.item .full{grid-column:1/-1}.item .rm{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <span class="badge">TRAVEL APP FACTORY · V1</span>
+    <h1>✈️ 我的旅遊 App 工廠</h1>
+    <p>先把旅程資料整理好，再讓同一套 App 模板重複使用。現有沖繩、JA Trip、Vercel 網站都不會被修改。</p>
+  </header>
+
+  <section id="homeView">
+    <div class="card">
+      <div class="sectionHead">
+        <div><h2>我的旅程</h2><div class="hint">資料會先保存在這台裝置的瀏覽器。</div></div>
+        <button class="btn primary" id="newTripBtn">＋ 新增旅程</button>
+      </div>
+    </div>
+    <div id="tripList" class="tripList"></div>
+  </section>
+
+  <section id="editorView" class="hidden">
+    <div class="card">
+      <div class="sectionHead"><div><span class="badge">旅程編輯器</span><h2 id="editorTitle" style="margin:7px 0 0">新旅程</h2></div><button class="btn light" id="backBtn">← 回到旅程</button></div>
+    </div>
+
+    <section class="card">
+      <h2>① 基本資料</h2>
+      <div class="grid3">
+        <div class="field"><label>旅程名稱</label><input id="name" placeholder="2027 京都親子旅行"></div>
+        <div class="field"><label>目的地</label><input id="destination" placeholder="京都"></div>
+        <div class="field"><label>幣別</label><input id="currency" value="JPY"></div>
+      </div>
+      <div class="grid3" style="margin-top:12px">
+        <div class="field"><label>開始日期</label><input id="start" type="date"></div>
+        <div class="field"><label>結束日期</label><input id="end" type="date"></div>
+        <div class="field"><label>旅行類型</label><select id="type"><option>親子自由行</option><option>自駕旅行</option><option>城市旅行</option><option>其他</option></select></div>
+      </div>
+      <div class="field" style="margin-top:12px"><label>備註</label><textarea id="note" placeholder="例如：小孩不要走太遠、每天安排休息時間"></textarea></div>
+    </section>
+
+    <section class="card">
+      <div class="sectionHead"><h2>② 每日行程</h2><button class="btn primary" id="addDayBtn">＋ 新增 DAY</button></div>
+      <div class="hint">時間／行程名稱／說明／地點都可以自由增加。</div>
+      <div id="days"></div>
+    </section>
+
+    <section class="card">
+      <div class="sectionHead"><h2>③ 住宿</h2><button class="btn light" id="addHotelBtn">＋ 新增住宿</button></div>
+      <div id="hotels"></div>
+    </section>
+
+    <section class="card">
+      <div class="sectionHead"><h2>④ 航班／交通／票券</h2><button class="btn light" id="addTicketBtn">＋ 新增項目</button></div>
+      <div id="tickets"></div>
+    </section>
+
+    <section class="card">
+      <div class="actions"><button class="btn primary" id="saveBtn">💾 儲存旅程</button><button class="btn light" id="duplicateBtn">複製成新旅程</button><button class="btn danger" id="deleteBtn">刪除旅程</button></div>
+    </section>
+  </section>
+</div>
+<footer><div class="footerIn"><span>目前：旅程管理＋行程資料</span><span>下一步：App 預覽＋記帳＋Firebase</span></div></footer>
+
+<script>
+const STORE='travel_app_factory_v1';let trips=[];let editingId=null;
+const $=id=>document.getElementById(id);const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function load(){try{trips=JSON.parse(localStorage.getItem(STORE)||'[]')}catch{trips=[]}renderTrips()}
+function save(){localStorage.setItem(STORE,JSON.stringify(trips))}
+function renderTrips(){const box=$('tripList');if(!trips.length){box.innerHTML='<div class="card empty"><div style="font-size:42px">🌏</div><h3>還沒有旅程</h3><p>按「新增旅程」開始建立你的第一趟旅行。</p></div>';return}box.innerHTML=trips.map(t=>`<div class="trip"><div class="tripTitle">${esc(t.name||'未命名旅程')}</div><div class="tripMeta">${esc(t.destination||'')} · ${esc(t.start||'')} ～ ${esc(t.end||'')} · ${esc(t.type||'')}</div><div class="tripMeta">${(t.days||[]).length} 天 · ${esc(t.currency||'JPY')}</div><div class="tripActions"><button class="btn primary" onclick="editTrip('${t.id}')">開啟編輯</button><button class="btn light" onclick="copyTrip('${t.id}')">複製旅程</button><button class="btn danger" onclick="removeTrip('${t.id}')">刪除</button></div></div>`).join('')}
+function resetForm(){['name','destination','note'].forEach(id=>$(id).value='');$('currency').value='JPY';$('start').value='';$('end').value='';$('type').value='親子自由行';$('days').innerHTML='';$('hotels').innerHTML='';$('tickets').innerHTML=''}
+function showEditor(){ $('homeView').classList.add('hidden');$('editorView').classList.remove('hidden');window.scrollTo(0,0)}
+function showHome(){ $('editorView').classList.add('hidden');$('homeView').classList.remove('hidden');renderTrips();window.scrollTo(0,0)}
+function newTrip(){editingId=null;resetForm();addDay();addHotel();addTicket();$('editorTitle').textContent='新旅程';showEditor()}
+function editTrip(id){const t=trips.find(x=>x.id===id);if(!t)return;editingId=id;$('name').value=t.name||'';$('destination').value=t.destination||'';$('currency').value=t.currency||'JPY';$('start').value=t.start||'';$('end').value=t.end||'';$('type').value=t.type||'親子自由行';$('note').value=t.note||'';$('days').innerHTML='';$('hotels').innerHTML='';$('tickets').innerHTML='';(t.days||[]).forEach(addDay);if(!t.days?.length)addDay();(t.hotels||[]).forEach(addHotel);if(!t.hotels?.length)addHotel();(t.tickets||[]).forEach(addTicket);if(!t.tickets?.length)addTicket();$('editorTitle').textContent=t.name||'編輯旅程';showEditor()}
+function collectDays(){return [...document.querySelectorAll('#days .day')].map(d=>({date:d.querySelector('.d-date').value,city:d.querySelector('.d-city').value.trim(),weather:d.querySelector('.d-weather').value.trim(),items:[...d.querySelectorAll('.item')].map(r=>({time:r.querySelector('.i-time').value,title:r.querySelector('.i-title').value.trim(),desc:r.querySelector('.i-desc').value.trim(),loc:r.querySelector('.i-loc').value.trim()}))}))}
+function collectHotels(){return [...document.querySelectorAll('#hotels .subCard')].map(d=>({name:d.querySelector('.h-name').value.trim(),checkIn:d.querySelector('.h-in').value,checkOut:d.querySelector('.h-out').value,address:d.querySelector('.h-address').value.trim(),url:d.querySelector('.h-url').value.trim(),note:d.querySelector('.h-note').value.trim()}))}
+function collectTickets(){return [...document.querySelectorAll('#tickets .subCard')].map(d=>({type:d.querySelector('.t-type').value.trim(),name:d.querySelector('.t-name').value.trim(),datetime:d.querySelector('.t-dt').value.trim(),code:d.querySelector('.t-code').value.trim(),url:d.querySelector('.t-url').value.trim(),note:d.querySelector('.t-note').value.trim()}))}
+function addDay(data={}){const d=document.createElement('div');d.className='day';d.innerHTML=`<div class="dayHead"><strong class="dayLabel"></strong><button class="btn danger" onclick="this.closest('.day').remove();renumber()">刪除 DAY</button></div><div class="grid3" style="margin-top:10px"><div class="field"><label>日期</label><input class="d-date" type="date" value="${esc(data.date||'')}"></div><div class="field"><label>城市</label><input class="d-city" value="${esc(data.city||'')}" placeholder="京都"></div><div class="field"><label>天氣</label><input class="d-weather" value="${esc(data.weather||'')}" placeholder="☀️ 5°/12°"></div></div><div class="items"></div><button class="btn light" style="margin-top:10px" onclick="addItem(this)">＋ 新增行程</button>`;$('days').appendChild(d);(data.items||[]).forEach(x=>addItem(d.querySelector('.light'),x));renumber()}
+function addItem(btn,data={}){const box=btn.closest('.day').querySelector('.items');const r=document.createElement('div');r.className='item';r.innerHTML=`<input class="i-time" type="time" value="${esc(data.time||'')}"><input class="i-title" value="${esc(data.title||'')}" placeholder="行程名稱"><textarea class="i-desc full" placeholder="說明">${esc(data.desc||'')}</textarea><input class="i-loc" value="${esc(data.loc||'')}" placeholder="地點"><button class="btn danger rm" onclick="this.closest('.item').remove()">刪除</button>`;box.appendChild(r)}
+function renumber(){document.querySelectorAll('#days .day').forEach((d,i)=>d.querySelector('.dayLabel').textContent='DAY '+(i+1))}
+function addHotel(data={}){const d=document.createElement('div');d.className='subCard';d.innerHTML=`<div class="grid3"><div class="field"><label>飯店名稱</label><input class="h-name" value="${esc(data.name||'')}"></div><div class="field"><label>入住</label><input class="h-in" type="date" value="${esc(data.checkIn||'')}"></div><div class="field"><label>退房</label><input class="h-out" type="date" value="${esc(data.checkOut||'')}"></div></div><div class="grid2" style="margin-top:10px"><div class="field"><label>地址</label><input class="h-address" value="${esc(data.address||'')}"></div><div class="field"><label>訂房連結</label><input class="h-url" value="${esc(data.url||'')}" placeholder="https://..."></div></div><div class="field" style="margin-top:10px"><label>備註</label><textarea class="h-note">${esc(data.note||'')}</textarea></div><button class="btn danger" style="margin-top:10px" onclick="this.closest('.subCard').remove()">刪除住宿</button>`;$('hotels').appendChild(d)}
+function addTicket(data={}){const d=document.createElement('div');d.className='subCard';d.innerHTML=`<div class="grid3"><div class="field"><label>類型</label><select class="t-type"><option ${data.type==='航班'?'selected':''}>航班</option><option ${data.type==='新幹線／火車'?'selected':''}>新幹線／火車</option><option ${data.type==='租車'?'selected':''}>租車</option><option ${data.type==='景點票券'?'selected':''}>景點票券</option><option ${(!data.type||data.type==='其他交通')?'selected':''}>其他交通</option></select></div><div class="field"><label>名稱</label><input class="t-name" value="${esc(data.name||'')}"></div><div class="field"><label>預約編號</label><input class="t-code" value="${esc(data.code||'')}"></div></div><div class="grid2" style="margin-top:10px"><div class="field"><label>日期／時間</label><input class="t-dt" value="${esc(data.datetime||'')}"></div><div class="field"><label>連結</label><input class="t-url" value="${esc(data.url||'')}" placeholder="https://..."></div></div><div class="field" style="margin-top:10px"><label>備註</label><textarea class="t-note">${esc(data.note||'')}</textarea></div><button class="btn danger" style="margin-top:10px" onclick="this.closest('.subCard').remove()">刪除項目</button>`;$('tickets').appendChild(d)}
+function saveCurrent(){const obj={id:editingId||uid(),name:$('name').value.trim()||'未命名旅程',destination:$('destination').value.trim(),currency:$('currency').value.trim()||'JPY',start:$('start').value,end:$('end').value,type:$('type').value,note:$('note').value.trim(),days:collectDays(),hotels:collectHotels(),tickets:collectTickets(),updatedAt:new Date().toISOString()};const i=trips.findIndex(x=>x.id===obj.id);if(i>=0)trips[i]=obj;else trips.unshift(obj);save();showHome();alert('✅ 旅程已儲存')}
+function removeTrip(id){if(!confirm('確定刪除這個旅程嗎？'))return;trips=trips.filter(x=>x.id!==id);save();renderTrips()}
+function copyTrip(id){const t=trips.find(x=>x.id===id);if(!t)return;const c=JSON.parse(JSON.stringify(t));c.id=uid();c.name=(t.name||'旅程')+'（複製）';c.updatedAt=new Date().toISOString();trips.unshift(c);save();renderTrips()}
+function duplicateCurrent(){const obj={id:uid(),name:(($('name').value.trim()||'未命名旅程')+'（複製）'),destination:$('destination').value.trim(),currency:$('currency').value.trim()||'JPY',start:$('start').value,end:$('end').value,type:$('type').value,note:$('note').value.trim(),days:collectDays(),hotels:collectHotels(),tickets:collectTickets(),updatedAt:new Date().toISOString()};trips.unshift(obj);save();editingId=obj.id;alert('✅ 已建立副本')}
+$('newTripBtn').onclick=newTrip;$('backBtn').onclick=showHome;$('addDayBtn').onclick=()=>addDay();$('addHotelBtn').onclick=()=>addHotel();$('addTicketBtn').onclick=()=>addTicket();$('saveBtn').onclick=saveCurrent;$('duplicateBtn').onclick=duplicateCurrent;$('deleteBtn').onclick=()=>editingId?removeTrip(editingId):showHome();load();
+</script>
+</body>
+</html>
