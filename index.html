@@ -26,30 +26,7 @@ footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);b
 .previewHero h2{margin:6px 0 5px;font-size:28px}
 .previewHero p{margin:0;color:var(--muted)}
 .previewNav{display:flex;gap:8px;overflow:auto;padding:10px 12px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
-.previewNav a{
-  white-space:nowrap;
-  text-decoration:none;
-  color:#4b5563;
-  background:#f7f7f8;
-  border:1px solid #e8e8eb;
-  border-radius:999px;
-  padding:9px 14px;
-  font-size:13px;
-  font-weight:800;
-  transition:.2s;
-}
 
-.previewNav a:hover{
-  background:#edf4ff;
-  color:var(--blue);
-  border-color:#d8e5ff;
-}
-
-.previewNav a:first-child{
-  background:var(--blue);
-  color:#fff;
-  border-color:var(--blue);
-}
 .previewNav a{white-space:nowrap;text-decoration:none;color:#4b5563;background:#f7f7f8;border:1px solid #e8e8eb;border-radius:999px;padding:9px 14px;font-size:13px;font-weight:800;transition:.2s}
 .previewNav a:hover{background:#edf4ff;color:var(--blue);border-color:#d8e5ff}.pSection{padding:18px 16px;border-bottom:1px solid var(--line)}
 .previewNav a:first-child{background:var(--blue);color:#fff;border-color:var(--blue)}
@@ -244,46 +221,55 @@ footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);b
     grid-template-columns:1fr;
   }
 }
-  .expenseTotal{background:var(--blueSoft);border-radius:15px;padding:14px}
-.expenseTotal small{display:block;color:var(--muted);font-size:12px}
-.expenseTotal strong{display:block;font-size:24px;margin-top:3px}
-.expenseRow{display:grid;grid-template-columns:90px 1fr 110px auto;gap:8px;align-items:center;padding:10px 0;border-top:1px solid #eee}
-.expenseForm{
-  margin-top:12px;
-  padding:14px;
-  background:#faf9f7;
-  border-radius:16px;
-  border:1px solid var(--line);
-}
 
-.expenseFormGrid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.expenseFormActions{
-  display:flex;
-  gap:8px;
-  margin-top:12px;
-}
-
-@media(max-width:620px){
-  .expenseFormGrid{
-    grid-template-columns:1fr;
-  }
-}
-.expenseRow:first-child{border-top:0}
-.expenseMeta{font-size:12px;color:var(--muted)}
-.expenseName{font-weight:800}
-.expenseAmount{text-align:right;font-weight:900}
-@media(max-width:620px){
-  .expenseSummary{grid-template-columns:1fr}
-  .expenseRow{grid-template-columns:1fr auto}
-  .expenseAmount{text-align:left}
-}
   .previewBack{margin-bottom:12px}
 @media(max-width:620px){.previewShell{border-radius:20px}.previewHero h2{font-size:25px}}
+.tripCard{
+  background:#fff;
+  border:1px solid #e8e3dd;
+  border-radius:22px;
+  padding:18px;
+  margin-bottom:14px;
+  box-shadow:0 5px 18px rgba(0,0,0,.05);
+  transition:.2s;
+}
+
+.tripCard:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(0,0,0,.08);
+}
+
+.tripCard h3{
+  margin:0;
+  font-size:19px;
+  color:#1f2937;
+}
+
+.tripCardMeta{
+  margin-top:7px;
+  color:#78716b;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.tripCardActions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+
+@media(max-width:620px){
+  .tripCard{
+    padding:16px;
+    border-radius:19px;
+  }
+
+  .tripCardActions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+}
 </style>
 </head>
 <body>
@@ -662,7 +648,7 @@ box.innerHTML='<div class="card empty"><div style="font-size:42px">🌏</div><h3
 return
 }
 box.innerHTML=trips.map(t=>`
-<div class="trip">
+<div class="tripCard">
 <div class="tripTitle">${esc(t.name||'未命名旅程')}</div>
 <div class="tripMeta">${esc(t.destination||'')} · ${esc(t.start||'')} ～ ${esc(t.end||'')} · ${esc(t.type||'')}</div>
 <div class="tripMeta">${(t.days||[]).length} 天 · ${esc(t.currency||'JPY')}</div>
@@ -673,7 +659,8 @@ box.innerHTML=trips.map(t=>`
 <button class="btn danger" onclick="removeTrip('${t.id}')">刪除</button>
 </div>
 </div>`).join('')
-}function resetForm(){['name','destination','note'].forEach(id=>$(id).value='');$('currency').value='JPY';$('start').value='';$('end').value='';$('type').value='親子自由行';$('days').innerHTML='';$('hotels').innerHTML='';$('tickets').innerHTML=''}
+}
+  function resetForm(){['name','destination','note'].forEach(id=>$(id).value='');$('currency').value='JPY';$('start').value='';$('end').value='';$('type').value='親子自由行';$('days').innerHTML='';$('hotels').innerHTML='';$('tickets').innerHTML=''}
 function showEditor(){
 $('homeView').classList.add('hidden');
 $('previewView').classList.add('hidden');
@@ -696,6 +683,44 @@ function removeTrip(id){if(!confirm('確定刪除這個旅程嗎？'))return;tri
 function copyTrip(id){const t=trips.find(x=>x.id===id);if(!t)return;const c=JSON.parse(JSON.stringify(t));c.id=uid();c.name=(t.name||'旅程')+'（複製）';c.updatedAt=new Date().toISOString();trips.unshift(c);save();renderTrips()}
 function duplicateCurrent(){const obj={id:uid(),name:(($('name').value.trim()||'未命名旅程')+'（複製）'),destination:$('destination').value.trim(),currency:$('currency').value.trim()||'JPY',start:$('start').value,end:$('end').value,type:$('type').value,note:$('note').value.trim(),days:collectDays(),hotels:collectHotels(),tickets:collectTickets(),expenses:editingId?(trips.find(x=>x.id===editingId)?.expenses||[]):[],updatedAt:new Date().toISOString()};trips.unshift(obj);save();editingId=obj.id;alert('✅ 已建立副本')}
 $('newTripBtn').onclick=newTrip;$('backBtn').onclick=showHome;$('addDayBtn').onclick=()=>addDay();$('addHotelBtn').onclick=()=>addHotel();$('addTicketBtn').onclick=()=>addTicket();$('saveBtn').onclick=saveCurrent;$('duplicateBtn').onclick=duplicateCurrent;$('deleteBtn').onclick=()=>editingId?removeTrip(editingId):showHome();load();
+.tripTitle{
+  font-size:19px;
+  font-weight:900;
+  color:#1f2937;
+  line-height:1.4;
+}
+
+.tripMeta{
+  margin-top:6px;
+  color:#78716b;
+  font-size:13px;
+  line-height:1.6;
+}
+
+.tripActions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+
+@media(max-width:620px){
+  .tripActions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+}
+  .tripActions .btn:first-child{
+  background:var(--blue);
+  color:#fff;
+  border-color:var(--blue);
+  font-weight:900;
+}
+
+.tripActions .btn:first-child:hover{
+  background:#1d4ed8;
+  border-color:#1d4ed8;
+}
 </script>
 </body>
 </html>
