@@ -37,7 +37,21 @@ footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);b
 .pMeta{font-size:13px;color:var(--muted);margin-top:5px}
 .pLink{display:inline-block;margin-top:9px;color:var(--blue);font-size:13px;font-weight:800;text-decoration:none}
 .expenseSoon{border:1px dashed #cfc7bd;background:#faf8f5;border-radius:16px;padding:16px;text-align:center;color:var(--muted)}
-.previewBack{margin-bottom:12px}
+.expenseSummary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.expenseTotal{background:var(--blueSoft);border-radius:15px;padding:14px}
+.expenseTotal small{display:block;color:var(--muted);font-size:12px}
+.expenseTotal strong{display:block;font-size:24px;margin-top:3px}
+.expenseRow{display:grid;grid-template-columns:90px 1fr 110px auto;gap:8px;align-items:center;padding:10px 0;border-top:1px solid #eee}
+.expenseRow:first-child{border-top:0}
+.expenseMeta{font-size:12px;color:var(--muted)}
+.expenseName{font-weight:800}
+.expenseAmount{text-align:right;font-weight:900}
+@media(max-width:620px){
+  .expenseSummary{grid-template-columns:1fr}
+  .expenseRow{grid-template-columns:1fr auto}
+  .expenseAmount{text-align:left}
+}
+  .previewBack{margin-bottom:12px}
 @media(max-width:620px){.previewShell{border-radius:20px}.previewHero h2{font-size:25px}}
 </style>
 </head>
@@ -148,10 +162,7 @@ footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);b
 
 <section class="pSection" id="p-expense">
 <h3>💰 記帳</h3>
-<div class="expenseSoon">
-記帳功能下一階段加入。<br>
-目前先把旅程資料與 App 介面做好。
-</div>
+<div id="previewExpense"></div>
 </section>
 
 </div>
@@ -262,7 +273,7 @@ box.innerHTML=trips.map(t=>`
 <div class="tripMeta">${esc(t.destination||'')} · ${esc(t.start||'')} ～ ${esc(t.end||'')} · ${esc(t.type||'')}</div>
 <div class="tripMeta">${(t.days||[]).length} 天 · ${esc(t.currency||'JPY')}</div>
 <div class="tripActions">
-<button class="btn primary" onclick="openPreview('${t.id}')">📱 開啟旅程 App</button>
+<button class="btn light" onclick="openPreview('${t.id}')">📱 開啟旅程 App</button>
 <button class="btn light" onclick="editTrip('${t.id}')">✏️ 編輯</button>
 <button class="btn light" onclick="copyTrip('${t.id}')">複製旅程</button>
 <button class="btn danger" onclick="removeTrip('${t.id}')">刪除</button>
