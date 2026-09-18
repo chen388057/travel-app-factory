@@ -278,7 +278,24 @@ footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);b
     color:#1f2937;
     line-height:1.4;
   }
+.tripCardTop{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
 
+.tripCardIcon{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:#eff6ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  flex:none;
+}
+  
   .tripMeta{
     margin-top:6px;
     color:#78716c;
@@ -693,9 +710,12 @@ return
 }
 box.innerHTML=trips.map(t=>`
 <div class="tripCard">
-<div class="tripTitle">${esc(t.name||'未命名旅程')}</div>
-<div class="tripMeta">${esc(t.destination||'')} · ${esc(t.start||'')} ～ ${esc(t.end||'')} · ${esc(t.type||'')}</div>
-<div class="tripMeta">${(t.days||[]).length} 天 · ${esc(t.currency||'JPY')}</div>
+<div class="tripCardTop">
+  <div class="tripCardIcon">✈️</div>
+  <div class="tripTitle">${esc(t.name||'未命名旅程')}</div>
+</div>
+<div class="tripMeta">📍 ${esc(t.destination||'')}　📅 ${esc(t.start||'')} ～ ${esc(t.end||'')}　·　${esc(t.type||'')}</div>
+<div class="tripMeta">🗓 ${(t.days||[]).length} 天　·　💴 ${esc(t.currency||'JPY')}</div>
 <div class="tripActions">
 <button class="btn light" onclick="openPreview('${t.id}')">📱 開啟旅程 App</button>
 <button class="btn light" onclick="editTrip('${t.id}')">✏️ 編輯</button>
