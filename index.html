@@ -18,7 +18,11 @@ footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);b
 .previewShell{max-width:620px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.06)}
 .previewTop{padding:14px 16px;background:#fff;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
 .previewBrand{font-size:12px;font-weight:900;letter-spacing:1.5px;color:var(--blue)}
-.previewHero{padding:26px 20px 24px;background:linear-gradient(135deg,#edf4ff,#fff)}
+.previewHero{padding:28px 20px 24px;background:linear-gradient(135deg,#eaf2ff 0%,#fff 58%,#f8f5ef 100%)}
+.previewHeroTop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.previewHeroIcon{font-size:34px;line-height:1}
+.previewInfo{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+.previewPill{display:inline-flex;align-items:center;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.8);border:1px solid rgba(37,99,235,.12);font-size:12px;font-weight:800;color:#4b5563}
 .previewHero h2{margin:6px 0 5px;font-size:28px}
 .previewHero p{margin:0;color:var(--muted)}
 .previewNav{display:flex;gap:8px;overflow:auto;padding:10px 12px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
@@ -152,9 +156,10 @@ footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);b
 </div>
 
 <div class="previewHero">
-<div class="badge">MY TRIP</div>
+<div class="previewHeroTop"><div class="badge">MY TRIP</div><div class="previewHeroIcon">✈️</div></div>
 <h2 id="previewTitle">我的旅程</h2>
 <p id="previewSub"></p>
+<div class="previewInfo" id="previewInfo"></div>
 </div>
 
 <nav class="previewNav">
