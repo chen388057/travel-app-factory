@@ -270,6 +270,52 @@ footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);b
     grid-template-columns:1fr 1fr;
   }
 }
+  /* 原本的 CSS */
+
+  .tripTitle{
+    font-size:19px;
+    font-weight:900;
+    color:#1f2937;
+    line-height:1.4;
+  }
+
+  .tripMeta{
+    margin-top:6px;
+    color:#78716c;
+    font-size:13px;
+    line-height:1.6;
+  }
+
+  .tripActions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:14px;
+  }
+
+  .tripActions .btn:first-child{
+    background:var(--blue);
+    color:#fff;
+    border-color:var(--blue);
+    font-weight:900;
+  }
+
+  .tripActions .btn:first-child:hover{
+    background:#1d4ed8;
+    border-color:#1d4ed8;
+  }
+
+  @media(max-width:620px){
+    .tripActions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+    }
+  }
+
+</style>
+</head>
+<body>
+  
 </style>
 </head>
 <body>
