@@ -15,6 +15,30 @@
 .day,.subCard{border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px}.dayHead{display:flex;justify-content:space-between;align-items:center;gap:8px}.dayLabel{font-weight:900}.item{display:grid;grid-template-columns:82px 1fr 1.3fr 1fr auto;gap:8px;align-items:start;margin-top:8px}.item input,.item textarea{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px}.item textarea{min-height:44px;resize:vertical}.actions{display:flex;gap:10px;flex-wrap:wrap}.empty{text-align:center;padding:28px;color:var(--muted)}
 footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:9px 16px calc(9px + env(safe-area-inset-bottom));z-index:100}.footerIn{max-width:1020px;margin:auto;display:flex;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted)}
 .hidden{display:none!important}@media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}.item{grid-template-columns:1fr 1fr}.item .full{grid-column:1/-1}.item .rm{grid-column:1/-1}}
+.previewShell{max-width:620px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.previewTop{padding:14px 16px;background:#fff;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+.previewBrand{font-size:12px;font-weight:900;letter-spacing:1.5px;color:var(--blue)}
+.previewHero{padding:26px 20px 24px;background:linear-gradient(135deg,#edf4ff,#fff)}
+.previewHero h2{margin:6px 0 5px;font-size:28px}
+.previewHero p{margin:0;color:var(--muted)}
+.previewNav{display:flex;gap:8px;overflow:auto;padding:10px 12px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.previewNav a{white-space:nowrap;text-decoration:none;color:var(--ink);background:#f5f2ee;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:800}
+.pSection{padding:18px 16px;border-bottom:1px solid var(--line)}
+.pSection h3{margin:0 0 12px;font-size:18px}
+.pDay{border:1px solid var(--line);border-radius:17px;padding:14px;margin-top:12px}
+.pDayTitle{font-weight:900;font-size:16px}
+.pDayCity{font-size:12px;color:var(--muted);margin-top:3px}
+.pItem{display:grid;grid-template-columns:58px 1fr;gap:10px;padding:12px 0;border-top:1px solid #eee;margin-top:10px}
+.pTime{font-weight:900;color:var(--blue);font-size:13px}
+.pTitle{font-weight:900}
+.pDesc,.pLoc{font-size:13px;color:var(--muted);margin-top:4px}
+.pCard{background:#faf9f7;border-radius:15px;padding:13px;margin-top:10px}
+.pName{font-weight:900;font-size:16px}
+.pMeta{font-size:13px;color:var(--muted);margin-top:5px}
+.pLink{display:inline-block;margin-top:9px;color:var(--blue);font-size:13px;font-weight:800;text-decoration:none}
+.expenseSoon{border:1px dashed #cfc7bd;background:#faf8f5;border-radius:16px;padding:16px;text-align:center;color:var(--muted)}
+.previewBack{margin-bottom:12px}
+@media(max-width:620px){.previewShell{border-radius:20px}.previewHero h2{font-size:25px}}
 </style>
 </head>
 <body>
@@ -75,18 +99,182 @@ footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);b
       <div class="actions"><button class="btn light" id="saveBtn">💾 儲存旅程</button><button class="btn light" id="duplicateBtn">複製成新旅程</button><button class="btn danger" id="deleteBtn">刪除旅程</button></div>
     </section>
   </section>
+  <section id="previewView" class="hidden">
+
+<div class="previewBack">
+<button class="btn light" onclick="closePreview()">← 回到我的旅程</button>
+</div>
+
+<div class="previewShell">
+
+<div class="previewTop">
+<div class="previewBrand">TRAVEL APP</div>
+<button class="btn light" onclick="editFromPreview()">✏️ 編輯</button>
+</div>
+
+<div class="previewHero">
+<div class="badge">MY TRIP</div>
+<h2 id="previewTitle">我的旅程</h2>
+<p id="previewSub"></p>
+</div>
+
+<nav class="previewNav">
+<a href="#p-itinerary">行程</a>
+<a href="#p-hotel">住宿</a>
+<a href="#p-ticket">票券</a>
+<a href="#p-note">備註</a>
+<a href="#p-expense">記帳</a>
+</nav>
+
+<section class="pSection" id="p-itinerary">
+<h3>🗓 每日行程</h3>
+<div id="previewDays"></div>
+</section>
+
+<section class="pSection" id="p-hotel">
+<h3>🏨 住宿</h3>
+<div id="previewHotels"></div>
+</section>
+
+<section class="pSection" id="p-ticket">
+<h3>🎫 航班／交通／票券</h3>
+<div id="previewTickets"></div>
+</section>
+
+<section class="pSection" id="p-note">
+<h3>📝 旅程備註</h3>
+<div id="previewNote"></div>
+</section>
+
+<section class="pSection" id="p-expense">
+<h3>💰 記帳</h3>
+<div class="expenseSoon">
+記帳功能下一階段加入。<br>
+目前先把旅程資料與 App 介面做好。
+</div>
+</section>
+
+</div>
+</section>
 </div>
 <footer><div class="footerIn"><span>目前：旅程管理＋行程資料</span><span>下一步：App 預覽＋記帳＋Firebase</span></div></footer>
 
 <script>
+let previewTripId=null;
+
+function openPreview(id){
+const t=trips.find(x=>x.id===id);
+if(!t)return;
+previewTripId=id;
+renderPreview(t);
+$('homeView').classList.add('hidden');
+$('editorView').classList.add('hidden');
+$('previewView').classList.remove('hidden');
+window.scrollTo(0,0)
+}
+
+function closePreview(){
+$('previewView').classList.add('hidden');
+$('homeView').classList.remove('hidden');
+renderTrips();
+window.scrollTo(0,0)
+}
+
+function editFromPreview(){
+if(previewTripId)editTrip(previewTripId)
+}
+
+function renderPreview(t){
+
+$('previewTitle').textContent=t.name||'未命名旅程';
+
+$('previewSub').textContent=[
+t.destination,
+t.start&&t.end?`${t.start} ～ ${t.end}`:t.start||t.end,
+t.type
+].filter(Boolean).join(' · ');
+
+$('previewNote').innerHTML=t.note
+?`<div class="pCard">${esc(t.note)}</div>`
+:'<div class="hint">目前沒有備註。</div>';
+
+const days=t.days||[];
+
+$('previewDays').innerHTML=days.length
+?days.map((d,i)=>`
+<div class="pDay">
+<div class="pDayTitle">DAY ${i+1} · ${esc(d.date||'')}</div>
+<div class="pDayCity">${esc(d.city||'')}</div>
+
+${(d.items||[]).map(x=>`
+<div class="pItem">
+<div class="pTime">${esc(x.time||'')}</div>
+<div>
+<div class="pTitle">${esc(x.title||'未命名行程')}</div>
+${x.desc?`<div class="pDesc">${esc(x.desc)}</div>`:''}
+${x.loc?`<div class="pLoc">📍 ${esc(x.loc)}</div>`:''}
+</div>
+</div>
+`).join('')}
+
+</div>
+`).join('')
+:'<div class="hint">目前還沒有每日行程。</div>';
+
+$('previewHotels').innerHTML=(t.hotels||[]).length
+?(t.hotels||[]).map(h=>`
+<div class="pCard">
+<div class="pName">🏨 ${esc(h.name||'住宿')}</div>
+${h.checkIn||h.checkOut?`<div class="pMeta">${esc(h.checkIn||'')} ${h.checkOut?'→ '+esc(h.checkOut):''}</div>`:''}
+${h.address?`<div class="pMeta">📍 ${esc(h.address)}</div>`:''}
+${h.note?`<div class="pMeta">${esc(h.note)}</div>`:''}
+${h.url?`<a class="pLink" href="${esc(h.url)}" target="_blank" rel="noopener">查看訂房連結 →</a>`:''}
+</div>
+`).join('')
+:'<div class="hint">目前還沒有住宿資料。</div>';
+
+$('previewTickets').innerHTML=(t.tickets||[]).length
+?(t.tickets||[]).map(x=>`
+<div class="pCard">
+<div class="pName">🎫 ${esc(x.type||'交通／票券')}｜${esc(x.name||'未命名')}</div>
+${x.datetime?`<div class="pMeta">🕐 ${esc(x.datetime)}</div>`:''}
+${x.code?`<div class="pMeta">預約編號：${esc(x.code)}</div>`:''}
+${x.note?`<div class="pMeta">${esc(x.note)}</div>`:''}
+${x.url?`<a class="pLink" href="${esc(x.url)}" target="_blank" rel="noopener">開啟連結 →</a>`:''}
+</div>
+`).join('')
+:'<div class="hint">目前還沒有交通／票券資料。</div>';
+}
 const STORE='travel_app_factory_v1';let trips=[];let editingId=null;
 const $=id=>document.getElementById(id);const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function load(){try{trips=JSON.parse(localStorage.getItem(STORE)||'[]')}catch{trips=[]}renderTrips()}
 function save(){localStorage.setItem(STORE,JSON.stringify(trips))}
-function renderTrips(){const box=$('tripList');if(!trips.length){box.innerHTML='<div class="card empty"><div style="font-size:42px">🌏</div><h3>還沒有旅程</h3><p>按「新增旅程」開始建立你的第一趟旅行。</p></div>';return}box.innerHTML=trips.map(t=>`<div class="trip"><div class="tripTitle">${esc(t.name||'未命名旅程')}</div><div class="tripMeta">${esc(t.destination||'')} · ${esc(t.start||'')} ～ ${esc(t.end||'')} · ${esc(t.type||'')}</div><div class="tripMeta">${(t.days||[]).length} 天 · ${esc(t.currency||'JPY')}</div><div class="tripActions"><button class="btn light" onclick="editTrip('${t.id}')">開啟編輯</button><button class="btn light" onclick="copyTrip('${t.id}')">複製旅程</button><button class="btn danger" onclick="removeTrip('${t.id}')">刪除</button></div></div>`).join('')}
-function resetForm(){['name','destination','note'].forEach(id=>$(id).value='');$('currency').value='JPY';$('start').value='';$('end').value='';$('type').value='親子自由行';$('days').innerHTML='';$('hotels').innerHTML='';$('tickets').innerHTML=''}
-function showEditor(){ $('homeView').classList.add('hidden');$('editorView').classList.remove('hidden');window.scrollTo(0,0)}
+function renderTrips(){
+const box=$('tripList');
+if(!trips.length){
+box.innerHTML='<div class="card empty"><div style="font-size:42px">🌏</div><h3>還沒有旅程</h3><p>按「新增旅程」開始建立你的第一趟旅行。</p></div>';
+return
+}
+box.innerHTML=trips.map(t=>`
+<div class="trip">
+<div class="tripTitle">${esc(t.name||'未命名旅程')}</div>
+<div class="tripMeta">${esc(t.destination||'')} · ${esc(t.start||'')} ～ ${esc(t.end||'')} · ${esc(t.type||'')}</div>
+<div class="tripMeta">${(t.days||[]).length} 天 · ${esc(t.currency||'JPY')}</div>
+<div class="tripActions">
+<button class="btn primary" onclick="openPreview('${t.id}')">📱 開啟旅程 App</button>
+<button class="btn light" onclick="editTrip('${t.id}')">✏️ 編輯</button>
+<button class="btn light" onclick="copyTrip('${t.id}')">複製旅程</button>
+<button class="btn danger" onclick="removeTrip('${t.id}')">刪除</button>
+</div>
+</div>`).join('')
+}function resetForm(){['name','destination','note'].forEach(id=>$(id).value='');$('currency').value='JPY';$('start').value='';$('end').value='';$('type').value='親子自由行';$('days').innerHTML='';$('hotels').innerHTML='';$('tickets').innerHTML=''}
+function showEditor(){
+$('homeView').classList.add('hidden');
+$('previewView').classList.add('hidden');
+$('editorView').classList.remove('hidden');
+window.scrollTo(0,0)
+}
 function showHome(){ $('editorView').classList.add('hidden');$('homeView').classList.remove('hidden');renderTrips();window.scrollTo(0,0)}
 function newTrip(){editingId=null;resetForm();addDay();addHotel();addTicket();$('editorTitle').textContent='新旅程';showEditor()}
 function editTrip(id){const t=trips.find(x=>x.id===id);if(!t)return;editingId=id;$('name').value=t.name||'';$('destination').value=t.destination||'';$('currency').value=t.currency||'JPY';$('start').value=t.start||'';$('end').value=t.end||'';$('type').value=t.type||'親子自由行';$('note').value=t.note||'';$('days').innerHTML='';$('hotels').innerHTML='';$('tickets').innerHTML='';(t.days||[]).forEach(addDay);if(!t.days?.length)addDay();(t.hotels||[]).forEach(addHotel);if(!t.hotels?.length)addHotel();(t.tickets||[]).forEach(addTicket);if(!t.tickets?.length)addTicket();$('editorTitle').textContent=t.name||'編輯旅程';showEditor()}
