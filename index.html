@@ -244,6 +244,7 @@ ${h.url?`<a class="pLink" href="${esc(h.url)}" target="_blank" rel="noopener">�
 `).join('')
 :'<div class="hint">目前還沒有住宿資料。</div>';
 
+renderExpenses(t);  
 $('previewTickets').innerHTML=(t.tickets||[]).length
 ?(t.tickets||[]).map(x=>`
 <div class="pCard">
@@ -257,6 +258,95 @@ ${x.url?`<a class="pLink" href="${esc(x.url)}" target="_blank" rel="noopener">�
 :'<div class="hint">目前還沒有交通／票券資料。</div>';
 }
 const STORE='travel_app_factory_v1';let trips=[];let editingId=null;
+function renderExpenses(t){
+const ex=t.expenses||[], cur=t.currency||'JPY';
+const total=ex.reduce((s,x)=>s+(Number(x.amount)||0),0);
+
+$('previewExpense').innerHTML=`
+<div class="expenseSummary">
+<div class="expenseTotal">
+<small>旅程總支出</small>
+<strong>${esc(cur)} ${total.toLocaleString()}</strong>
+</div>
+<div class="expenseTotal">
+<small>支出筆數</small>
+<strong>${ex.length}</strong>
+</div>
+</div>
+
+<button class="btn primary" onclick="addExpenseFromPreview()">＋ 新增支出</button>
+
+<div style="margin-top:10px">
+${ex.length
+?ex.map(x=>`
+<div class="expenseRow">
+<div class="expenseMeta">${esc(x.date||'')}</div>
+<div>
+<div class="expenseName">${esc(x.name||x.category||'支出')}</div>
+<div class="expenseMeta">
+${esc(x.category||'其他')}
+${x.note?' · '+esc(x.note):''}
+</div>
+</div>
+<div class="expenseAmount">
+${esc(x.currency||cur)} ${(Number(x.amount)||0).toLocaleString()}
+</div>
+<button class="btn danger" onclick="deleteExpense('${x.id}')">刪除</button>
+</div>
+`).join('')
+:'<div class="hint" style="margin-top:12px">目前還沒有支出，按「新增支出」開始記帳。</div>'
+}
+</div>`;
+}
+
+function addExpenseFromPreview(){
+const t=trips.find(x=>x.id===previewTripId);
+if(!t)return;
+
+const date=t.start||new Date().toISOString().slice(0,10);
+
+const name=prompt('支出項目，例如：晚餐、車票、門票');
+if(!name)return;
+
+const amount=prompt('金額');
+if(amount===null||amount===''||isNaN(Number(amount))){
+return alert('請輸入正確金額');
+}
+
+const category=prompt(
+'分類：交通／住宿／餐飲／購物／門票／其他',
+'餐飲'
+)||'其他';
+
+t.expenses=t.expenses||[];
+
+t.expenses.push({
+id:uid(),
+date,
+name:name.trim(),
+amount:Number(amount),
+currency:t.currency||'JPY',
+category:category.trim(),
+note:''
+});
+
+t.updatedAt=new Date().toISOString();
+
+save();
+renderPreview(t);
+}
+
+function deleteExpense(id){
+const t=trips.find(x=>x.id===previewTripId);
+if(!t)return;
+
+t.expenses=(t.expenses||[]).filter(x=>x.id!==id);
+
+t.updatedAt=new Date().toISOString();
+
+save();
+renderPreview(t);
+}
 const $=id=>document.getElementById(id);const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 function load(){try{trips=JSON.parse(localStorage.getItem(STORE)||'[]')}catch{trips=[]}renderTrips()}
