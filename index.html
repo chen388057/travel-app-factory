@@ -658,6 +658,139 @@ footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);b
     font-size:14px;
   }
 }
+#previewTickets .pCard{
+  background:#fffdf9;
+  border:1px solid #eadfd2;
+  border-radius:20px;
+  padding:16px;
+  margin-top:12px;
+  box-shadow:0 4px 14px rgba(120,95,70,.05);
+}
+
+#previewTickets .pName{
+  color:#4b3b30;
+  font-size:16px;
+  font-weight:900;
+  line-height:1.5;
+}
+
+#previewTickets .pMeta{
+  color:#887568;
+  font-size:13px;
+  line-height:1.6;
+}
+
+#previewTickets .pLink{
+  color:#765b45;
+  font-size:13px;
+  font-weight:900;
+  text-decoration:none;
+}
+
+#previewTickets .pLink:hover{
+  color:#5f4634;
+}
+#previewNote .pCard{
+  background:#fffdf9;
+  border:1px solid #eadfd2;
+  border-radius:20px;
+  padding:18px;
+  margin-top:12px;
+  box-shadow:0 4px 14px rgba(120,95,70,.04);
+  color:#6f5d4f;
+  font-size:14px;
+  line-height:1.8;
+}
+
+#previewNote .hint{
+  color:#a18f80;
+  background:#faf4ed;
+  border:1px dashed #e5d7c9;
+  border-radius:16px;
+  padding:16px;
+}
+#previewExpense .expenseSummary{
+  gap:10px;
+}
+
+#previewExpense .expenseTotal{
+  background:linear-gradient(135deg,#f8f0e8 0%,#fffdf9 100%);
+  border:1px solid #eadfd2;
+  border-radius:18px;
+  padding:16px;
+  box-shadow:0 4px 14px rgba(120,95,70,.04);
+}
+
+#previewExpense .expenseTotal small{
+  color:#9a8778;
+  font-size:12px;
+  font-weight:800;
+}
+
+#previewExpense .expenseTotal strong{
+  color:#4b3b30;
+  font-size:23px;
+  margin-top:5px;
+}
+
+#previewExpense .expenseRow{
+  border-top:1px solid #eee4da;
+}
+
+#previewExpense .expenseMeta{
+  color:#968477;
+}
+
+#previewExpense .expenseName{
+  color:#4b3b30;
+}
+
+#previewExpense .expenseAmount{
+  color:#765b45;
+}
+
+#previewExpense .expenseForm{
+  background:#fffdf9;
+  border:1px solid #eadfd2;
+  border-radius:18px;
+  box-shadow:0 4px 14px rgba(120,95,70,.04);
+}
+
+#previewExpense .expenseFormActions{
+  margin-top:12px;
+}  
+.previewNav{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:10px 2px;
+  margin:14px 0 8px;
+  scrollbar-width:none;
+}
+
+.previewNav::-webkit-scrollbar{
+  display:none;
+}
+
+.previewNav a{
+  flex:none;
+  padding:9px 14px;
+  border-radius:999px;
+  background:#fffdf9;
+  border:1px solid #eadfd2;
+  color:#765b45;
+  font-size:13px;
+  font-weight:900;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:.2s;
+}
+
+.previewNav a:hover{
+  background:#f5eee7;
+  border-color:#d9c8b8;
+  color:#5f4634;
+}  
 </style>
 </head>
 <body>
