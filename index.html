@@ -229,11 +229,13 @@ function renderPreview(t){
 
 $('previewTitle').textContent=t.name||'未命名旅程';
 
-$('previewSub').textContent=[
-t.destination,
-t.start&&t.end?`${t.start} ～ ${t.end}`:t.start||t.end,
-t.type
-].filter(Boolean).join(' · ');
+$('previewSub').textContent=t.destination||'準備出發';
+
+$('previewInfo').innerHTML=[
+t.start&&t.end?`📅 ${esc(t.start)} ～ ${esc(t.end)}`:t.start?`📅 ${esc(t.start)}`:'',
+t.type?`🧳 ${esc(t.type)}`:'',
+t.currency?`💴 ${esc(t.currency)}`:''
+].filter(Boolean).map(x=>`<span class="previewPill">${x}</span>`).join('');
 
 $('previewNote').innerHTML=t.note
 ?`<div class="pCard">${esc(t.note)}</div>`
