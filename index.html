@@ -681,10 +681,27 @@ footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);b
 }
 
 #previewTickets .pLink{
-  color:#765b45;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  margin-top:14px;
+  padding:10px 14px;
+  border-radius:12px;
+  background:#f1e5d8;
+  border:1px solid #e3d2c1;
+  color:#6f523d;
   font-size:13px;
   font-weight:900;
   text-decoration:none;
+  transition:.2s;
+}
+
+#previewTickets .pLink:hover{
+  background:#ead9c8;
+  border-color:#d6c0ac;
+  color:#5f4634;
+  transform:translateY(-1px);
 }
 
 #previewTickets .pLink:hover{
@@ -1042,7 +1059,7 @@ $('previewTickets').innerHTML=(t.tickets||[]).length
 ${x.datetime?`<div class="pMeta">🕐 ${esc(x.datetime)}</div>`:''}
 ${x.code?`<div class="pMeta">預約編號：${esc(x.code)}</div>`:''}
 ${x.note?`<div class="pMeta">${esc(x.note)}</div>`:''}
-${x.url?`<a class="pLink" href="${esc(x.url)}" target="_blank" rel="noopener">開啟連結 →</a>`:''}
+${x.url?`<a class="pLink" href="${esc(x.url)}" target="_blank" rel="noopener">📄 查看票券 →</a>`:''}
 </div>
 `).join('')
 :'<div class="hint">目前還沒有交通／票券資料。</div>';
