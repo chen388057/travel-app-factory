@@ -42,6 +42,31 @@ footer{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.97);b
 .expenseTotal small{display:block;color:var(--muted);font-size:12px}
 .expenseTotal strong{display:block;font-size:24px;margin-top:3px}
 .expenseRow{display:grid;grid-template-columns:90px 1fr 110px auto;gap:8px;align-items:center;padding:10px 0;border-top:1px solid #eee}
+.expenseForm{
+  margin-top:12px;
+  padding:14px;
+  background:#faf9f7;
+  border-radius:16px;
+  border:1px solid var(--line);
+}
+
+.expenseFormGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.expenseFormActions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+
+@media(max-width:620px){
+  .expenseFormGrid{
+    grid-template-columns:1fr;
+  }
+}
 .expenseRow:first-child{border-top:0}
 .expenseMeta{font-size:12px;color:var(--muted)}
 .expenseName{font-weight:800}
@@ -300,34 +325,101 @@ ${esc(x.currency||cur)} ${(Number(x.amount)||0).toLocaleString()}
 }
 
 function addExpenseFromPreview(){
+const box=$('previewExpense');
+if(!box)return;
+
 const t=trips.find(x=>x.id===previewTripId);
 if(!t)return;
 
-const date=t.start||new Date().toISOString().slice(0,10);
+const today=t.start||new Date().toISOString().slice(0,10);
 
-const name=prompt('支出項目，例如：晚餐、車票、門票');
-if(!name)return;
+const form=document.createElement('div');
+form.className='expenseForm';
 
-const amount=prompt('金額');
-if(amount===null||amount===''||isNaN(Number(amount))){
-return alert('請輸入正確金額');
+form.innerHTML=`
+<div class="expenseFormGrid">
+
+<div class="field">
+<label>日期</label>
+<input type="date" id="expenseDate" value="${esc(today)}">
+</div>
+
+<div class="field">
+<label>支出項目</label>
+<input type="text" id="expenseName" placeholder="例如：晚餐、車票、門票">
+</div>
+
+<div class="field">
+<label>分類</label>
+<select id="expenseCategory">
+<option value="餐飲">餐飲</option>
+<option value="交通">交通</option>
+<option value="住宿">住宿</option>
+<option value="購物">購物</option>
+<option value="門票">門票</option>
+<option value="其他">其他</option>
+</select>
+</div>
+
+<div class="field">
+<label>金額</label>
+<input type="number" id="expenseAmount" min="0" step="1" placeholder="請輸入金額">
+</div>
+
+</div>
+
+<div class="field" style="margin-top:10px">
+<label>備註</label>
+<input type="text" id="expenseNote" placeholder="選填">
+</div>
+
+<div class="expenseFormActions">
+<button class="btn primary" onclick="saveExpenseFromForm()">儲存支出</button>
+<button class="btn light" onclick="cancelExpenseForm()">取消</button>
+</div>
+`;
+
+box.prepend(form);
+
+const nameInput=$('expenseName');
+if(nameInput)nameInput.focus();
 }
 
-const category=prompt(
-'分類：交通／住宿／餐飲／購物／門票／其他',
-'餐飲'
-)||'其他';
+function saveExpenseFromForm(){
+const t=trips.find(x=>x.id===previewTripId);
+if(!t)return;
+
+const date=$('expenseDate').value;
+const name=$('expenseName').value.trim();
+const category=$('expenseCategory').value;
+const amount=Number($('expenseAmount').value);
+const note=$('expenseNote').value.trim();
+
+if(!date){
+alert('請選擇日期');
+return;
+}
+
+if(!name){
+alert('請輸入支出項目');
+return;
+}
+
+if(!amount||amount<0){
+alert('請輸入正確金額');
+return;
+}
 
 t.expenses=t.expenses||[];
 
 t.expenses.push({
 id:uid(),
 date,
-name:name.trim(),
-amount:Number(amount),
+name,
+amount,
 currency:t.currency||'JPY',
-category:category.trim(),
-note:''
+category,
+note
 });
 
 t.updatedAt=new Date().toISOString();
@@ -335,7 +427,10 @@ t.updatedAt=new Date().toISOString();
 save();
 renderPreview(t);
 }
-
+function cancelExpenseForm(){
+renderPreview(trips.find(x=>x.id===previewTripId));
+}
+  
 function deleteExpense(id){
 const t=trips.find(x=>x.id===previewTripId);
 if(!t)return;
