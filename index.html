@@ -683,44 +683,8 @@ function removeTrip(id){if(!confirm('確定刪除這個旅程嗎？'))return;tri
 function copyTrip(id){const t=trips.find(x=>x.id===id);if(!t)return;const c=JSON.parse(JSON.stringify(t));c.id=uid();c.name=(t.name||'旅程')+'（複製）';c.updatedAt=new Date().toISOString();trips.unshift(c);save();renderTrips()}
 function duplicateCurrent(){const obj={id:uid(),name:(($('name').value.trim()||'未命名旅程')+'（複製）'),destination:$('destination').value.trim(),currency:$('currency').value.trim()||'JPY',start:$('start').value,end:$('end').value,type:$('type').value,note:$('note').value.trim(),days:collectDays(),hotels:collectHotels(),tickets:collectTickets(),expenses:editingId?(trips.find(x=>x.id===editingId)?.expenses||[]):[],updatedAt:new Date().toISOString()};trips.unshift(obj);save();editingId=obj.id;alert('✅ 已建立副本')}
 $('newTripBtn').onclick=newTrip;$('backBtn').onclick=showHome;$('addDayBtn').onclick=()=>addDay();$('addHotelBtn').onclick=()=>addHotel();$('addTicketBtn').onclick=()=>addTicket();$('saveBtn').onclick=saveCurrent;$('duplicateBtn').onclick=duplicateCurrent;$('deleteBtn').onclick=()=>editingId?removeTrip(editingId):showHome();load();
-.tripTitle{
-  font-size:19px;
-  font-weight:900;
-  color:#1f2937;
-  line-height:1.4;
-}
 
-.tripMeta{
-  margin-top:6px;
-  color:#78716b;
-  font-size:13px;
-  line-height:1.6;
-}
-
-.tripActions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:14px;
-}
-
-@media(max-width:620px){
-  .tripActions{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-  }
-}
-  .tripActions .btn:first-child{
-  background:var(--blue);
-  color:#fff;
-  border-color:var(--blue);
-  font-weight:900;
-}
-
-.tripActions .btn:first-child:hover{
-  background:#1d4ed8;
-  border-color:#1d4ed8;
-}
+  
 </script>
 </body>
 </html>
